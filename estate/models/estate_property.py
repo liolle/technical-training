@@ -1,4 +1,4 @@
-from odoo import models,fields
+from odoo import api,models,fields
 
 class EstateProperty(models.Model):
    _name = "estate.property"
@@ -12,10 +12,10 @@ class EstateProperty(models.Model):
    expected_price = fields.Float(required=True)
    selling_price = fields.Float(readonly=True,copy=False)
    bedrooms = fields.Integer(default=2)
-   living_area = fields.Integer()
    facades = fields.Integer()
    garage = fields.Boolean()
    garden = fields.Boolean()
+   living_area = fields.Integer()
    garden_area = fields.Integer()
    active = fields.Boolean(default=True)
 
@@ -43,4 +43,20 @@ class EstateProperty(models.Model):
     selection=[('new', 'New'), ('received', 'Offer Received'),('accepted', 'Offer Accepted'),('sold', 'Sold'),('canceled', 'Canceled')],
     help=""
     )
+   
+   #Computed field
+   total_area = fields.Integer(compute="_total_area")
+   best_price = fields.Float(compute="_best_price")
+
+   @api.depends("living_area","garden_area")
+   def _total_area(self):
+      for record in self:
+        record.total_area = record.living_area + record.garden_area
+
+   @api.depends("offer_ids.price")
+   def _best_price(self):
+      for record in self:
+        record.best_price = max(record.offer_ids.mapped('price'))
+
+
 
