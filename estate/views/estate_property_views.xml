@@ -52,9 +52,13 @@
 							<field name="name" class="mb16"/>
 						</h1>
 
+						<field name="tag_ids" widdget="many2many_tags"/>
 						<group>
+							<field name="property_type_id" string="Property Type"/>
 							<field name="postcode" string="Postcode"/>
 							<field name="date_availability" string="Available From"/>
+						</group>
+						<group>
 							<field name="expected_price"/>
 							<field name="selling_price"/>
 						</group>
@@ -73,10 +77,14 @@
 								</group>
 
 							</page>
-							<page string="Details">
-
-
-
+							<page string="Offers">
+								<field name="offer_ids"/>
+							</page>
+							<page string="Other Info">
+								<group>
+									<field name="sales_man_id" string="Salesman"/>
+									<field name="buyer_id" string="Buyer"/>
+								</group>
 							</page>
 						</notebook>
 					</group>
@@ -90,4 +98,6 @@
 		<field name="res_model">estate.property</field>
 		<field name="view_mode">tree,form</field>
 	</record>
+
+
 </odoo>
